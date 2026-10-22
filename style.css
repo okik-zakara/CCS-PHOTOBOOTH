@@ -75,7 +75,7 @@ button:disabled { cursor: not-allowed; }
 
 .wordmark {
   font-family: var(--display);
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -83,7 +83,7 @@ button:disabled { cursor: not-allowed; }
 
 .logo {
   display: block;
-  height: 28px;
+  height: 48px;
   width: auto;
 }
 
