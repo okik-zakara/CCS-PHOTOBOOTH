@@ -16,12 +16,17 @@ const CONFIG = {
 
   pauseBetweenShotsMs: 1500,
 
+  // Camera Club logo, stamped on every strip. Turn it off in Settings.
+  // logo.src is a path or data: URI (the artifact build embeds it).
+  logo: { src: "logo.png", show: true },
+
   // Text and colours shared by every layout (sizes live in LAYOUTS below)
   strip: {
     background: "#ffffff",
     captionColor: "#263238",
     dateColor: "#78909c",
-    caption: "#photobooth",
+    caption: "#CCS.CameraClub",
+    subline: "Corpus Christi School",
     showDate: true,
     barColors: ["#F7CAC9", "#92A8D1"],  // Pantone 2016: Rose Quartz to Serenity
   },
@@ -139,37 +144,38 @@ const LAYOUTS = [
   { ...stripBase, id: "twin4", group: "Two strips on one sheet", name: "Twin 4",
     desc: "1 set of 4, printed twice", rows: 4, copies: 2 },
 
-  /* Canva designs: each one is a transparent PNG frame laid over the photos.
+  /* Canva designs: every one is a TWIN strip (copies: 2): one round of 4 photos
+     printed twice side by side, ready to cut in half. Each one is a transparent PNG frame laid over the photos.
      frame.slots are the photo windows in frame pixels, [x, y, w, h], photo 1
      first. FRAME_SCALE (below) sets how big the frame is on the sheet. To add
      another, export a strip from Canva, cut the photo windows out, drop the PNG
      in frames/ and add an entry like these. */
-  { ...stripBase, id: "cv-lilac-haze", group: "Canva designs", name: "Lilac Haze", desc: "4 photos in a Canva frame",
-    rows: 4, aspect: 1.3904, style: "frame",
+  { ...stripBase, id: "cv-lilac-haze", group: "Camera Club Custom Strips", name: "Lilac Haze", desc: "Twin strip: 4 photos, printed twice",
+    rows: 4, copies: 2, aspect: 1.3904, style: "frame",
     frame: { src: "frames/lilac-haze.png", w: 454, h: 1315, slots: [[20,20,414,298],[20,324,414,298],[20,628,414,298],[20,933,414,297]] } },
-  { ...stripBase, id: "cv-pink-glitter", group: "Canva designs", name: "Pink Glitter", desc: "4 photos in a Canva frame",
-    rows: 4, aspect: 1.3904, style: "frame",
+  { ...stripBase, id: "cv-pink-glitter", group: "Camera Club Custom Strips", name: "Pink Glitter", desc: "Twin strip: 4 photos, printed twice",
+    rows: 4, copies: 2, aspect: 1.3904, style: "frame",
     frame: { src: "frames/pink-glitter.png", w: 455, h: 1316, slots: [[19,20,414,298],[19,324,414,298],[19,628,414,298],[19,933,414,297]] } },
-  { ...stripBase, id: "cv-clean-white", group: "Canva designs", name: "Clean White", desc: "4 photos in a Canva frame",
-    rows: 4, aspect: 1.3904, style: "frame",
+  { ...stripBase, id: "cv-clean-white", group: "Camera Club Custom Strips", name: "Clean White", desc: "Twin strip: 4 photos, printed twice",
+    rows: 4, copies: 2, aspect: 1.3904, style: "frame",
     frame: { src: "frames/clean-white.png", w: 454, h: 1315, slots: [[20,20,414,298],[20,324,414,298],[20,628,414,298],[20,933,414,297]] } },
-  { ...stripBase, id: "cv-sunset-waves", group: "Canva designs", name: "Sunset Waves", desc: "4 photos in a Canva frame",
-    rows: 4, aspect: 1.4034, style: "frame",
+  { ...stripBase, id: "cv-sunset-waves", group: "Camera Club Custom Strips", name: "Sunset Waves", desc: "Twin strip: 4 photos, printed twice",
+    rows: 4, copies: 2, aspect: 1.4034, style: "frame",
     frame: { src: "frames/sunset-waves.png", w: 454, h: 1316, slots: [[19,20,415,292],[19,320,415,299],[19,626,415,299],[19,932,415,293]] } },
-  { ...stripBase, id: "cv-neon-leopard", group: "Canva designs", name: "Neon Leopard", desc: "4 photos in a Canva frame",
-    rows: 4, aspect: 1.3950, style: "frame",
+  { ...stripBase, id: "cv-neon-leopard", group: "Camera Club Custom Strips", name: "Neon Leopard", desc: "Twin strip: 4 photos, printed twice",
+    rows: 4, copies: 2, aspect: 1.3950, style: "frame",
     frame: { src: "frames/neon-leopard.png", w: 455, h: 1316, slots: [[20,24,415,298],[20,330,415,296],[19,633,415,298],[20,937,415,298]] } },
-  { ...stripBase, id: "cv-galaxy", group: "Canva designs", name: "Galaxy", desc: "4 photos in a Canva frame",
-    rows: 4, aspect: 1.3936, style: "frame",
+  { ...stripBase, id: "cv-galaxy", group: "Camera Club Custom Strips", name: "Galaxy", desc: "Twin strip: 4 photos, printed twice",
+    rows: 4, copies: 2, aspect: 1.3936, style: "frame",
     frame: { src: "frames/galaxy.png", w: 455, h: 1316, slots: [[19,24,416,298],[19,328,416,298],[19,632,415,299],[19,936,417,299]] } },
-  { ...stripBase, id: "cv-candy-stripes", group: "Canva designs", name: "Candy Stripes", desc: "4 photos in a Canva frame",
-    rows: 4, aspect: 1.3720, style: "frame",
+  { ...stripBase, id: "cv-candy-stripes", group: "Camera Club Custom Strips", name: "Candy Stripes", desc: "Twin strip: 4 photos, printed twice",
+    rows: 4, copies: 2, aspect: 1.3720, style: "frame",
     frame: { src: "frames/candy-stripes.png", w: 455, h: 1316, slots: [[20,24,415,298],[20,330,415,304],[19,639,415,304],[19,950,415,304]] } },
-  { ...stripBase, id: "cv-crimson", group: "Canva designs", name: "Crimson", desc: "4 photos in a Canva frame",
-    rows: 4, aspect: 1.3904, style: "frame",
+  { ...stripBase, id: "cv-crimson", group: "Camera Club Custom Strips", name: "Crimson", desc: "Twin strip: 4 photos, printed twice",
+    rows: 4, copies: 2, aspect: 1.3904, style: "frame",
     frame: { src: "frames/crimson.png", w: 455, h: 1315, slots: [[20,20,414,298],[20,324,414,298],[20,628,414,298],[20,933,414,297]] } },
-  { ...stripBase, id: "cv-navy", group: "Canva designs", name: "Navy", desc: "4 photos in a Canva frame",
-    rows: 4, aspect: 1.3891, style: "frame",
+  { ...stripBase, id: "cv-navy", group: "Camera Club Custom Strips", name: "Navy", desc: "Twin strip: 4 photos, printed twice",
+    rows: 4, copies: 2, aspect: 1.3891, style: "frame",
     frame: { src: "frames/navy.png", w: 455, h: 1315, slots: [[21,24,413,297],[21,328,413,298],[21,632,414,298],[21,937,413,297]] } },
 ];
 
@@ -192,6 +198,10 @@ const cameraSelect  = $("cameraSelect");
 const resSelect     = $("resSelect");
 const mirrorToggle  = $("mirrorToggle");
 const startBtn      = $("startBtn");
+const uploadBtn     = $("uploadBtn");
+const uploadInput   = $("uploadInput");
+const sampleBtn     = $("sampleBtn");
+const logoToggle    = $("logoToggle");
 
 const filterRail    = $("filterRail");
 const layoutBtn     = $("layoutBtn");
@@ -205,7 +215,6 @@ const captureBtn    = $("captureBtn");
 
 const stripPreview  = $("stripPreview");
 const downloadBtn   = $("downloadBtn");
-const printBtn      = $("printBtn");
 const resetBtn      = $("resetBtn");
 
 const captureCanvas = $("captureCanvas");
@@ -371,6 +380,7 @@ function attachStreamToThumbs(s) {
 async function startCamera() {
   if (!navigator.mediaDevices?.getUserMedia) {
     setStatus("This browser can't access cameras. Use Chrome, Edge or Firefox on localhost or HTTPS.", true);
+    setStatus("Camera access is blocked in this view. Use 'Upload photos' or 'Try sample photos' instead.", true);
     return;
   }
 
@@ -411,7 +421,7 @@ async function startCamera() {
       NotReadableError: "Another app is using the camera. Close it and try again.",
       OverconstrainedError: "This camera doesn't support that resolution. Try 720p in Settings.",
     };
-    setStatus(messages[err.name] || `Could not start the camera: ${err.message}`, true);
+    setStatus((messages[err.name] || `Could not start the camera: ${err.message}`) + " You can also upload photos or try the samples.", true);
   }
 }
 
@@ -505,7 +515,7 @@ async function startSession() {
 
   captureBtn.disabled = true;
   layoutBtn.disabled = true;
-  [downloadBtn, printBtn, resetBtn, editBtn].forEach((b) => (b.disabled = true));
+  [downloadBtn, resetBtn, editBtn].forEach((b) => (b.disabled = true));
 
   const per = layout.cols * layout.rows;
   const shots = [];
@@ -526,19 +536,7 @@ async function startSession() {
     }
 
     shotBadge.classList.add("hidden");
-    sessionShots = sessionShots.concat(shots);
-    round++;
-
-    if (round < layout.sets) {
-      // More sets to go: show what we have so far and wait for the next press.
-      buildStrip(sessionShots);
-      setStatus(`Set ${round} done. Swap places, then press the shutter for set ${round + 1}.`);
-    } else {
-      lastShots = sessionShots;
-      edits = lastShots.map(newEdit);
-      buildStrip(lastShots);
-      enterEdit(0);
-    }
+    finishRound(shots);
   } catch (err) {
     console.error(err);
     shotBadge.classList.add("hidden");
@@ -551,6 +549,81 @@ async function startSession() {
     resetBtn.disabled = !(lastShots || sessionShots.length);
     editBtn.disabled = !lastShots;
   }
+}
+
+// a round of photos is in: build the strip, or wait for the next set
+function finishRound(shots) {
+  sessionShots = sessionShots.concat(shots);
+  round++;
+  if (round < layout.sets) {
+    buildStrip(sessionShots);
+    setStatus(`Set ${round} done. Swap places, then press the shutter for set ${round + 1}.`);
+  } else {
+    lastShots = sessionShots;
+    edits = lastShots.map(newEdit);
+    buildStrip(lastShots);
+    enterEdit(0);
+  }
+  resetBtn.disabled = false;
+  editBtn.disabled = !lastShots;
+}
+
+function beginFresh() {
+  if (lastShots) {
+    lastShots = null; sessionShots = []; round = 0; edits = [];
+    clearStrip();
+  }
+}
+
+/* ---------- photos without a camera ----------
+   Camera access is blocked inside the artifact viewer, so photos can also
+   come from files on the device, or from generated sample portraits. */
+async function useUploaded(files) {
+  const per = layout.cols * layout.rows;
+  const imgs = [];
+  for (const f of [...files].filter((f) => f.type.startsWith("image/")).slice(0, per)) {
+    try { imgs.push(await createImageBitmap(f)); } catch (e) { /* skip unreadable file */ }
+  }
+  if (!imgs.length) { setStatus("Pick image files (JPG, PNG or WebP).", true); return; }
+  const shots = Array.from({ length: per }, (_, i) => imgs[i % imgs.length]);
+  beginFresh();
+  finishRound(shots);
+  if (imgs.length < per) setStatus(`You picked ${imgs.length}, so photos repeat to fill ${per} slots. Retake to pick more.`);
+}
+
+const SAMPLE_PALETTES = [
+  ["#1c2e6b", "#6f86d6", "#f2c6cf"], ["#7a1b4e", "#ee7fa8", "#ffe1b8"],
+  ["#0f5c63", "#6fd0c9", "#fff0b8"], ["#3b2a8a", "#b58cff", "#ffd1ec"],
+];
+async function sampleShot(i) {
+  const c = document.createElement("canvas");
+  c.width = 1280; c.height = 960;
+  const x = c.getContext("2d");
+  const [a, b, hi] = SAMPLE_PALETTES[i % SAMPLE_PALETTES.length];
+  const g = x.createLinearGradient(0, 0, 1280, 960);
+  g.addColorStop(0, a); g.addColorStop(1, b);
+  x.fillStyle = g; x.fillRect(0, 0, 1280, 960);
+  x.fillStyle = hi; x.globalAlpha = 0.18;
+  for (let k = 0; k < 7; k++) { x.beginPath(); x.arc(160 + k * 180 + (i * 53) % 90, 140 + ((k * 97 + i * 71) % 260), 70 + (k % 3) * 28, 0, 7); x.fill(); }
+  x.globalAlpha = 1;
+  const cx = 640 + (i % 2 ? 40 : -40);
+  x.fillStyle = "rgba(255,255,255,0.92)";
+  x.beginPath(); x.ellipse(cx, 1000, 330, 300, 0, 0, 7); x.fill();
+  x.fillStyle = "#f6d5c3";
+  x.beginPath(); x.ellipse(cx, 400, 130, 160, 0, 0, 7); x.fill();
+  x.fillStyle = "#2b2230";
+  x.beginPath(); x.ellipse(cx, 300, 150, 120, 0, Math.PI, 0); x.fill();
+  x.fillStyle = "#2b2230";
+  x.beginPath(); x.arc(cx - 48, 410, 11, 0, 7); x.arc(cx + 48, 410, 11, 0, 7); x.fill();
+  x.strokeStyle = "#b5524f"; x.lineWidth = 9; x.lineCap = "round";
+  x.beginPath(); x.arc(cx, 455, 48, 0.15 * Math.PI, 0.85 * Math.PI); x.stroke();
+  return createImageBitmap(c);
+}
+async function useSamples() {
+  const per = layout.cols * layout.rows;
+  const shots = await Promise.all(Array.from({ length: per }, (_, i) => sampleShot(i)));
+  beginFresh();
+  finishRound(shots);
 }
 
 /* ---------- filter on canvas ----------
@@ -706,13 +779,17 @@ function geometry(L) {
   if (L.frame) {
     const panelW = Math.round(L.frame.w * FRAME_SCALE);
     const panelH = Math.round(L.frame.h * FRAME_SCALE);
+    const panels = L.sets * L.copies;
+    const margin = panels > 1 ? 36 : 0;
+    const between = panels > 1 ? 48 : 0;
     return {
       cellW: Math.round(L.frame.slots[0][2] * FRAME_SCALE),
       cellH: Math.round(L.frame.slots[0][3] * FRAME_SCALE),
-      padTop: 0, panelW, panelH, panels: 1, margin: 0, between: 0,
+      padTop: 0, panelW, panelH, panels, margin, between,
       perPanel: L.frame.slots.length,
       kx: panelW / L.frame.w, ky: panelH / L.frame.h,
-      width: panelW, height: panelH,
+      width: panels * panelW + (panels - 1) * between + margin * 2,
+      height: panelH + margin * 2,
     };
   }
   const cellW = L.cellW;
@@ -800,6 +877,30 @@ const FOOTER_TEXT = {
    Photos go in the frame's windows first, then the frame PNG (transparent
    where the photos show) is laid over them. */
 const frameImages = {};   // layout id -> loaded <img>
+
+/* ---------- logo ---------- */
+let logoImg = null;
+function loadLogo() {
+  if (!CONFIG.logo?.src) return;
+  const img = new Image();
+  img.onload = () => {
+    logoImg = img;
+    drawPickerPreviews();
+    if (!busy) refreshStrip();
+  };
+  img.src = CONFIG.logo.src;
+}
+const logoOn = () => !!(logoImg && CONFIG.logo.show);
+
+// draws the logo into the box [x, y, size, size], with a soft shadow so it lifts off busy frames
+function drawLogo(ctx, x, y, size) {
+  ctx.save();
+  ctx.shadowColor = "rgba(0, 0, 0, 0.28)";
+  ctx.shadowBlur = size * 0.1;
+  ctx.shadowOffsetY = size * 0.03;
+  ctx.drawImage(logoImg, x, y, size, size);
+  ctx.restore();
+}
 let framesTimer = null;
 
 function loadFrames() {
@@ -839,6 +940,30 @@ function drawFramePanel(ctx, L, g, ox, oy, setIdx, photos, f, preview) {
 
   const img = frameImages[L.id];
   if (img) ctx.drawImage(img, ox, oy, g.panelW, g.panelH);
+
+  // logo + caption, centred together in the band under the last photo
+  const last = L.frame.slots[L.frame.slots.length - 1];
+  const bandTop = (last[1] + last[3]) * g.ky;
+  const band = g.panelH - bandTop;
+  const size = logoOn() ? Math.min(band - 14 * g.ky, 84 * g.ky) : 0;
+  const gap = size ? 12 : 0;
+  let fs = Math.min(band * 0.3, 30);
+  ctx.font = `600 ${fs}px Montserrat, "Helvetica Neue", Arial, sans-serif`;
+  const maxText = g.panelW - 48 - size - gap;
+  const tw0 = ctx.measureText(CONFIG.strip.caption).width;
+  if (tw0 > maxText) { fs *= maxText / tw0; ctx.font = `600 ${fs}px Montserrat, "Helvetica Neue", Arial, sans-serif`; }
+  const tw = ctx.measureText(CONFIG.strip.caption).width;
+  const startX = ox + (g.panelW - (size + gap + tw)) / 2;
+  const midY = oy + bandTop + band / 2;
+  if (size > 24) drawLogo(ctx, startX, midY - size / 2, size);
+  ctx.save();
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
+  const dark = L.id === "cv-clean-white";
+  ctx.fillStyle = dark ? CONFIG.strip.captionColor : "#ffffff";
+  if (!dark) { ctx.shadowColor = "rgba(0, 0, 0, 0.6)"; ctx.shadowBlur = 6; ctx.shadowOffsetY = 1; }
+  ctx.fillText(CONFIG.strip.caption, startX + (size ? size + gap : 0), midY + 1);
+  ctx.restore();
 }
 
 function drawPanel(ctx, L, g, ox, oy, setIdx, photos, f, preview) {
@@ -871,7 +996,12 @@ function drawPanel(ctx, L, g, ox, oy, setIdx, photos, f, preview) {
   // caption + date
   const t = FOOTER_TEXT[L.style];
   const footerTop = oy + g.panelH - L.footer;
-  const cx = ox + g.panelW / 2;
+  const logoSize = logoOn() ? Math.round(Math.min(L.footer - 38, 110)) : 0;
+  if (logoSize) {
+    const barH = film ? 0 : 12;
+    drawLogo(ctx, ox + L.pad, footerTop + (L.footer - barH - logoSize) / 2, logoSize);
+  }
+  const cx = ox + g.panelW / 2 + (logoSize ? (logoSize + 12) / 2 : 0);
   ctx.textAlign = "center";
   ctx.textBaseline = "alphabetic";
   ctx.fillStyle = film ? "#f5f5f5" : c.captionColor;
@@ -882,7 +1012,7 @@ function drawPanel(ctx, L, g, ox, oy, setIdx, photos, f, preview) {
     ctx.fillStyle = film ? "#9e9e9e" : c.dateColor;
     ctx.font = `400 ${t.date}px Roboto, "Helvetica Neue", Arial, sans-serif`;
     ctx.fillText(
-      new Date().toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" }),
+      new Date().toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }),
       cx,
       footerTop + t.dateY
     );
@@ -951,7 +1081,6 @@ function buildStrip(shots) {
 
   stripDataUrl = complete ? url : null;
   downloadBtn.disabled = !complete;
-  printBtn.disabled = !complete;
   editBtn.disabled = !complete;
   resetBtn.disabled = false;
 }
@@ -1406,32 +1535,25 @@ retakeBtn.addEventListener("click", () => {
 });
 
 /* ---------- strip actions ---------- */
-function downloadStrip() {
+async function downloadStrip() {
   if (!stripDataUrl) return;
-  const a = document.createElement("a");
-  a.href = stripDataUrl;
-  a.download = `photobooth-${layout.id}-${Date.now()}.jpg`;
-  a.click();
-}
-
-function printStrip() {
-  if (!stripDataUrl) return;
-  const win = window.open("", "_blank");
-  if (!win) {
-    setStatus("Your browser blocked the print window. Allow pop-ups and try again.", true);
+  const name = `camera-club-${layout.id}-${Date.now()}.jpg`;
+  // inside the artifact viewer, files are saved through the downloads capability
+  const dl = await (window.claude?.use ? window.claude.use("downloads").catch(() => null) : null);
+  if (dl) {
+    try {
+      const blob = await (await fetch(stripDataUrl)).blob();
+      await dl.save({ filename: name, data: blob });
+      setStatus("Saved. Your strip is in your downloads.");
+    } catch (err) {
+      if (err?.code !== "declined") setStatus("Could not save the strip. Try again.", true);
+    }
     return;
   }
-  win.document.write(`
-    <html><head><title>Print</title>
-    <style>
-      @page { margin: 0; }
-      body { margin: 0; display: grid; place-items: center; }
-      img { max-width: 100%; max-height: 100vh; }
-    </style></head>
-    <body><img src="${stripDataUrl}"
-      onload="window.focus(); window.print(); window.onafterprint = () => window.close();">
-    </body></html>`);
-  win.document.close();
+  const a = document.createElement("a");
+  a.href = stripDataUrl;
+  a.download = name;
+  a.click();
 }
 
 function clearStrip() {
@@ -1456,7 +1578,7 @@ function resetSession() {
   edits = [];
   editIndex = 0;
   clearStrip();
-  [downloadBtn, printBtn, resetBtn, editBtn].forEach((b) => (b.disabled = true));
+  [downloadBtn, resetBtn, editBtn].forEach((b) => (b.disabled = true));
   setStatus(readyMessage());
 }
 
@@ -1535,9 +1657,16 @@ function pickLayout(id) {
 
 /* ---------- events ---------- */
 startBtn.addEventListener("click", startCamera);
+uploadBtn.addEventListener("click", () => uploadInput.click());
+uploadInput.addEventListener("change", () => { useUploaded(uploadInput.files); uploadInput.value = ""; });
+sampleBtn.addEventListener("click", useSamples);
+logoToggle.addEventListener("change", () => {
+  CONFIG.logo.show = logoToggle.checked;
+  drawPickerPreviews();
+  if (!busy) refreshStrip();
+});
 captureBtn.addEventListener("click", startSession);
 downloadBtn.addEventListener("click", downloadStrip);
-printBtn.addEventListener("click", printStrip);
 resetBtn.addEventListener("click", resetSession);
 
 mirrorToggle.addEventListener("change", applyMirror);
@@ -1632,6 +1761,7 @@ applyLayout();
 drawPickerPreviews();
 showView("layout");
 loadFrames();
+loadLogo();
 
 // redraw the previews once the strip fonts are ready
 if (document.fonts?.load) {

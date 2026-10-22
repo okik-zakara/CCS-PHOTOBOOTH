@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Photobooth</title>
-  <meta name="theme-color" content="#F7CAC9">
+  <title>Camera Club Photobooth</title>
+  
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,8 +18,8 @@
             aria-label="Open settings" aria-controls="drawer" aria-expanded="false">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
     </button>
-    <img class="logo" src="logo.png" alt="CCS CAMERA CLUB">
-    <span class="wordmark">photobooth</span>
+    <img class="brand-logo" src="logo.png" alt="Camera Club, Corpus Christi School">
+    <span class="wordmark">Camera Club <small>Photobooth</small></span>
   </header>
 
   <!-- settings drawer -->
@@ -52,6 +52,12 @@
         <span class="track"></span>
         <span>Mirror preview</span>
       </label>
+
+      <label class="switch">
+        <input type="checkbox" id="logoToggle" checked>
+        <span class="track"></span>
+        <span>Camera Club logo on strips</span>
+      </label>
     </div>
   </aside>
 
@@ -60,7 +66,7 @@
     <div class="picker-head">
       <div>
         <h1 id="pickerTitle">Choose your strip</h1>
-        <p>Pick a layout, then take your photos.</p>
+        <p>Pick a layout, then take your photos. Every Canva design is a twin strip, so one round of photos prints twice.</p>
       </div>
       <button id="pickerBack" class="raised has-ripple hidden" type="button">Back to camera</button>
     </div>
@@ -80,8 +86,13 @@
         <span class="fx fxv cam-only"></span>
 
         <div id="placeholder" class="placeholder cam-only">
-          <p>Connect your camera, then start.</p>
-          <button id="startBtn" class="ghost has-ripple" type="button">Start camera</button>
+          <p>Connect your camera, or use photos you already have.</p>
+          <div class="ph-actions">
+            <button id="startBtn" class="ghost has-ripple" type="button">Start camera</button>
+            <button id="uploadBtn" class="ghost has-ripple" type="button">Upload photos</button>
+            <button id="sampleBtn" class="ghost has-ripple" type="button">Try sample photos</button>
+          </div>
+          <input id="uploadInput" type="file" accept="image/*" multiple hidden>
         </div>
 
         <div id="countdown" class="countdown cam-only hidden" aria-live="assertive"></div>
@@ -179,7 +190,6 @@
       <div class="actions">
         <button id="downloadBtn" class="raised has-ripple" type="button" disabled>Download</button>
         <button id="editBtn" class="flat has-ripple" type="button" disabled>Edit photos</button>
-        <button id="printBtn" class="flat has-ripple" type="button" disabled>Print</button>
         <button id="resetBtn" class="flat has-ripple" type="button" disabled>Start over</button>
       </div>
     </aside>

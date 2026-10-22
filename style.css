@@ -69,22 +69,19 @@ button:disabled { cursor: not-allowed; }
 .topbar {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
+  gap: 10px;
+  padding: 10px 16px;
 }
 
+.brand-logo { display: block; width: 40px; height: 40px; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.25); }
+.wordmark small { font-weight: 400; letter-spacing: 0.22em; }
+.ph-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
 .wordmark {
   font-family: var(--display);
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-}
-
-.logo {
-  display: block;
-  height: 80px;
-  width: auto;
 }
 
 .icon-btn {
@@ -533,8 +530,7 @@ select:focus { outline: 0; border-bottom: 2px solid var(--pink); padding-bottom:
   grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
-.actions .raised,
-.actions #resetBtn { grid-column: 1 / -1; }
+.actions .raised { grid-column: 1 / -1; }
 
 /* ---------- views: layout picker or booth ---------- */
 body[data-view="layout"] .layout { display: none; }
@@ -747,14 +743,14 @@ body[data-view="booth"] .picker { display: none; }
 
 /* ---------- small screens ---------- */
 @media (max-width: 960px) {
-  .layout { grid-template-columns: minmax(0, 1fr); padding: 4px 12px 24px; gap: 16px; }
+  .layout { grid-template-columns: minmax(0, 1fr); padding: 4px 16px 24px; gap: 16px; }
   .stage { width: 100%; }
   .stage-body { padding: 16px 12px 14px; }
   .controls { gap: 6px; }
   .seg button { min-width: 30px; padding: 6px 8px; }
   .strip-preview { min-height: 0; }
   .strip-preview img { max-height: 480px; }
-  .picker { padding: 4px 12px 40px; }
+  .picker { padding: 4px 16px 40px; }
   .picker-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
   .layout-card .well { height: 190px; padding: 12px; }
 }
