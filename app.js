@@ -138,6 +138,39 @@ const LAYOUTS = [
     desc: "2 sets of 3 photos, side by side", rows: 3, sets: 2 },
   { ...stripBase, id: "twin4", group: "Two strips on one sheet", name: "Twin 4",
     desc: "1 set of 4, printed twice", rows: 4, copies: 2 },
+
+  /* Canva designs: each one is a transparent PNG frame laid over the photos.
+     frame.slots are the photo windows in frame pixels, [x, y, w, h], photo 1
+     first. FRAME_SCALE (below) sets how big the frame is on the sheet. To add
+     another, export a strip from Canva, cut the photo windows out, drop the PNG
+     in frames/ and add an entry like these. */
+  { ...stripBase, id: "cv-lilac-haze", group: "Canva designs", name: "Lilac Haze", desc: "4 photos in a Canva frame",
+    rows: 4, aspect: 1.3904, style: "frame",
+    frame: { src: "frames/lilac-haze.png", w: 454, h: 1315, slots: [[20,20,414,298],[20,324,414,298],[20,628,414,298],[20,933,414,297]] } },
+  { ...stripBase, id: "cv-pink-glitter", group: "Canva designs", name: "Pink Glitter", desc: "4 photos in a Canva frame",
+    rows: 4, aspect: 1.3904, style: "frame",
+    frame: { src: "frames/pink-glitter.png", w: 455, h: 1316, slots: [[19,20,414,298],[19,324,414,298],[19,628,414,298],[19,933,414,297]] } },
+  { ...stripBase, id: "cv-clean-white", group: "Canva designs", name: "Clean White", desc: "4 photos in a Canva frame",
+    rows: 4, aspect: 1.3904, style: "frame",
+    frame: { src: "frames/clean-white.png", w: 454, h: 1315, slots: [[20,20,414,298],[20,324,414,298],[20,628,414,298],[20,933,414,297]] } },
+  { ...stripBase, id: "cv-sunset-waves", group: "Canva designs", name: "Sunset Waves", desc: "4 photos in a Canva frame",
+    rows: 4, aspect: 1.4034, style: "frame",
+    frame: { src: "frames/sunset-waves.png", w: 454, h: 1316, slots: [[19,20,415,292],[19,320,415,299],[19,626,415,299],[19,932,415,293]] } },
+  { ...stripBase, id: "cv-neon-leopard", group: "Canva designs", name: "Neon Leopard", desc: "4 photos in a Canva frame",
+    rows: 4, aspect: 1.3950, style: "frame",
+    frame: { src: "frames/neon-leopard.png", w: 455, h: 1316, slots: [[20,24,415,298],[20,330,415,296],[19,633,415,298],[20,937,415,298]] } },
+  { ...stripBase, id: "cv-galaxy", group: "Canva designs", name: "Galaxy", desc: "4 photos in a Canva frame",
+    rows: 4, aspect: 1.3936, style: "frame",
+    frame: { src: "frames/galaxy.png", w: 455, h: 1316, slots: [[19,24,416,298],[19,328,416,298],[19,632,415,299],[19,936,417,299]] } },
+  { ...stripBase, id: "cv-candy-stripes", group: "Canva designs", name: "Candy Stripes", desc: "4 photos in a Canva frame",
+    rows: 4, aspect: 1.3720, style: "frame",
+    frame: { src: "frames/candy-stripes.png", w: 455, h: 1316, slots: [[20,24,415,298],[20,330,415,304],[19,639,415,304],[19,950,415,304]] } },
+  { ...stripBase, id: "cv-crimson", group: "Canva designs", name: "Crimson", desc: "4 photos in a Canva frame",
+    rows: 4, aspect: 1.3904, style: "frame",
+    frame: { src: "frames/crimson.png", w: 455, h: 1315, slots: [[20,20,414,298],[20,324,414,298],[20,628,414,298],[20,933,414,297]] } },
+  { ...stripBase, id: "cv-navy", group: "Canva designs", name: "Navy", desc: "4 photos in a Canva frame",
+    rows: 4, aspect: 1.3891, style: "frame",
+    frame: { src: "frames/navy.png", w: 455, h: 1315, slots: [[21,24,413,297],[21,328,413,298],[21,632,414,298],[21,937,413,297]] } },
 ];
 
 /* ---------- element references ---------- */
@@ -667,7 +700,21 @@ function drawLayers(ctx, f, x, y, w, h) {
 /* ---------- sheet builder ----------
    A "sheet" is the whole printed image: one or more strips laid side by
    side, built from the layout's geometry. */
+const FRAME_SCALE = 1.32;   // Canva frames are drawn this much bigger than the PNG
+
 function geometry(L) {
+  if (L.frame) {
+    const panelW = Math.round(L.frame.w * FRAME_SCALE);
+    const panelH = Math.round(L.frame.h * FRAME_SCALE);
+    return {
+      cellW: Math.round(L.frame.slots[0][2] * FRAME_SCALE),
+      cellH: Math.round(L.frame.slots[0][3] * FRAME_SCALE),
+      padTop: 0, panelW, panelH, panels: 1, margin: 0, between: 0,
+      perPanel: L.frame.slots.length,
+      kx: panelW / L.frame.w, ky: panelH / L.frame.h,
+      width: panelW, height: panelH,
+    };
+  }
   const cellW = L.cellW;
   const cellH = Math.round(cellW / L.aspect);
   const padTop = L.padTop ?? L.pad;
@@ -749,7 +796,54 @@ const FOOTER_TEXT = {
   film:     { cap: 26, capY: 46, date: 16, dateY: 74 },
 };
 
+/* ---------- Canva frames ----------
+   Photos go in the frame's windows first, then the frame PNG (transparent
+   where the photos show) is laid over them. */
+const frameImages = {};   // layout id -> loaded <img>
+let framesTimer = null;
+
+function loadFrames() {
+  LAYOUTS.filter((l) => l.frame).forEach((L) => {
+    const img = new Image();
+    img.onload = () => {
+      frameImages[L.id] = img;
+      // redraw once, after the last of a burst of frames arrives
+      clearTimeout(framesTimer);
+      framesTimer = setTimeout(() => {
+        drawPickerPreviews();
+        if (!busy) refreshStrip();
+        if (mode === "edit") renderEditorPhoto();
+      }, 40);
+    };
+    img.onerror = () => console.warn(`Frame image not found: ${L.frame.src}`);
+    img.src = L.frame.src;
+  });
+}
+
+function drawFramePanel(ctx, L, g, ox, oy, setIdx, photos, f, preview) {
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(ox, oy, g.panelW, g.panelH);
+
+  L.frame.slots.forEach(([sx, sy, sw, sh], slot) => {
+    const idx = setIdx * g.perPanel + slot;
+    const x = ox + sx * g.kx, y = oy + sy * g.ky, w = sw * g.kx, h = sh * g.ky;
+    if (preview) {
+      drawPlaceholder(ctx, x, y, w, h, slot + setIdx);
+    } else if (photos[idx]) {
+      drawShot(ctx, photos[idx], x, y, w, h, f);
+      drawEdits(ctx, edits[idx], x, y, w, h);
+    } else {
+      drawEmptySlot(ctx, L, x, y, w, h, idx + 1);
+    }
+  });
+
+  const img = frameImages[L.id];
+  if (img) ctx.drawImage(img, ox, oy, g.panelW, g.panelH);
+}
+
 function drawPanel(ctx, L, g, ox, oy, setIdx, photos, f, preview) {
+  if (L.frame) return drawFramePanel(ctx, L, g, ox, oy, setIdx, photos, f, preview);
+
   const c = CONFIG.strip;
   const film = L.style === "film";
 
@@ -1537,6 +1631,7 @@ buildPicker();
 applyLayout();
 drawPickerPreviews();
 showView("layout");
+loadFrames();
 
 // redraw the previews once the strip fonts are ready
 if (document.fonts?.load) {
