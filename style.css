@@ -81,6 +81,12 @@ button:disabled { cursor: not-allowed; }
   text-transform: uppercase;
 }
 
+.logo {
+  display: block;
+  height: 28px;
+  width: auto;
+}
+
 .icon-btn {
   display: grid;
   place-items: center;
