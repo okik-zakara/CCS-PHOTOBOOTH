@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Photobooth</title>
+  <meta name="theme-color" content="#F7CAC9">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-view="layout">
+
+  <header class="topbar">
+    <button id="menuBtn" class="icon-btn has-ripple" type="button"
+            aria-label="Open settings" aria-controls="drawer" aria-expanded="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+    </button>
+    <span class="wordmark">photobooth</span>
+  </header>
+
+  <!-- settings drawer -->
+  <div class="scrim" id="scrim"></div>
+  <aside class="drawer" id="drawer" aria-label="Settings">
+    <div class="drawer-head">
+      <button id="closeBtn" class="icon-btn has-ripple" type="button" aria-label="Close settings">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+      <h2>Settings</h2>
+    </div>
+
+    <div class="drawer-body">
+      <label class="field">
+        <span>Camera</span>
+        <select id="cameraSelect"><option value="">Default camera</option></select>
+      </label>
+
+      <label class="field">
+        <span>Resolution</span>
+        <select id="resSelect">
+          <option value="1920x1080" selected>1080p</option>
+          <option value="1280x720">720p</option>
+          <option value="3840x2160">4K</option>
+        </select>
+      </label>
+
+      <label class="switch">
+        <input type="checkbox" id="mirrorToggle" checked>
+        <span class="track"></span>
+        <span>Mirror preview</span>
+      </label>
+    </div>
+  </aside>
+
+  <!-- layout picker: the first screen -->
+  <section class="picker" id="picker" aria-labelledby="pickerTitle">
+    <div class="picker-head">
+      <div>
+        <h1 id="pickerTitle">Choose your strip</h1>
+        <p>Pick a layout, then take your photos.</p>
+      </div>
+      <button id="pickerBack" class="raised has-ripple hidden" type="button">Back to camera</button>
+    </div>
+    <p class="picker-note hidden" id="pickerNote">Choosing a different layout starts a new set of photos.</p>
+    <div id="pickerGroups"></div>
+  </section>
+
+  <main class="layout">
+
+    <section class="stage card">
+      <div class="viewfinder" id="viewfinder">
+        <!-- camera view -->
+        <video id="video" class="cam-only" autoplay playsinline muted></video>
+        <!-- colour washes and vignette for the chosen filter (see applyFx in app.js) -->
+        <span class="fx fx1 cam-only"></span>
+        <span class="fx fx2 cam-only"></span>
+        <span class="fx fxv cam-only"></span>
+
+        <div id="placeholder" class="placeholder cam-only">
+          <p>Connect your camera, then start.</p>
+          <button id="startBtn" class="ghost has-ripple" type="button">Start camera</button>
+        </div>
+
+        <div id="countdown" class="countdown cam-only hidden" aria-live="assertive"></div>
+        <div id="shotBadge" class="shot-badge cam-only hidden"></div>
+        <div id="flash" class="flash cam-only"></div>
+
+        <!-- edit view -->
+        <div class="editor edit-only" id="editor" data-tool="stickers">
+          <canvas id="photoCanvas"></canvas>
+          <canvas id="overlayCanvas" aria-label="Photo editor. Drag stickers to move them."></canvas>
+          <div class="photo-tabs hidden" id="photoTabs" role="group" aria-label="Photo to edit"></div>
+        </div>
+      </div>
+
+      <div class="stage-body">
+        <div class="filter-slot cam-only" id="filterSlot">
+          <div class="filters" id="filterRail" role="radiogroup" aria-label="Filter"></div>
+        </div>
+
+        <!-- camera controls -->
+        <div class="controls cam-only">
+          <div class="ctl ctl-left">
+            <span class="ctl-label">Layout</span>
+            <button id="layoutBtn" class="chip has-ripple" type="button" aria-label="Change layout">
+              <span id="layoutName">Classic 4</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg>
+            </button>
+          </div>
+
+          <button id="captureBtn" class="fab has-ripple" type="button" disabled aria-label="Take photos">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="3.2"/>
+              <path d="M9 2 7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+            </svg>
+          </button>
+
+          <div class="ctl ctl-right">
+            <span class="ctl-label">Timer</span>
+            <div class="seg" id="timerSeg" role="group" aria-label="Countdown length">
+              <button type="button" data-value="3" aria-pressed="true">3s</button>
+              <button type="button" data-value="5" aria-pressed="false">5s</button>
+              <button type="button" data-value="10" aria-pressed="false">10s</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- edit controls -->
+        <div class="edit-bar edit-only" id="editBar">
+          <div class="seg seg-wide" id="toolSeg" role="group" aria-label="Edit tool">
+            <button type="button" data-value="stickers" aria-pressed="true">Stickers</button>
+            <button type="button" data-value="text" aria-pressed="false">Text</button>
+            <button type="button" data-value="draw" aria-pressed="false">Draw</button>
+            <button type="button" data-value="filters" aria-pressed="false">Filters</button>
+          </div>
+
+          <div class="tool-panel" data-panel="stickers">
+            <div class="emoji-grid" id="emojiGrid"></div>
+          </div>
+
+          <div class="tool-panel hidden" data-panel="text">
+            <div class="text-row">
+              <input id="textInput" type="text" maxlength="28" placeholder="Say cheese!" aria-label="Text to add">
+              <button id="addTextBtn" class="flat has-ripple" type="button">Add text</button>
+            </div>
+            <div class="swatches" id="textSwatches" aria-label="Text colour"></div>
+          </div>
+
+          <div class="tool-panel hidden" data-panel="draw">
+            <div class="swatches" id="penSwatches" aria-label="Pen colour"></div>
+            <div class="draw-actions">
+              <button id="undoBtn" class="flat has-ripple" type="button">Undo</button>
+              <button id="clearBtn" class="flat has-ripple" type="button">Clear drawing</button>
+            </div>
+          </div>
+
+          <div class="tool-panel hidden" data-panel="filters" id="panelFilters"></div>
+
+          <div class="edit-actions">
+            <button id="retakeBtn" class="flat has-ripple" type="button">Retake</button>
+            <button id="doneBtn" class="raised accent has-ripple" type="button">Done</button>
+          </div>
+        </div>
+
+        <p id="status" class="status" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <aside class="results card">
+      <h2>Your strip</h2>
+
+      <div id="stripPreview" class="strip-preview">
+        <p class="empty">Take photos and your strip will appear here.</p>
+      </div>
+
+      <div class="actions">
+        <button id="downloadBtn" class="raised has-ripple" type="button" disabled>Download</button>
+        <button id="editBtn" class="flat has-ripple" type="button" disabled>Edit photos</button>
+        <button id="printBtn" class="flat has-ripple" type="button" disabled>Print</button>
+        <button id="resetBtn" class="flat has-ripple" type="button" disabled>Start over</button>
+      </div>
+    </aside>
+
+  </main>
+
+  <canvas id="captureCanvas" hidden></canvas>
+  <canvas id="stripCanvas" hidden></canvas>
+
+  <script src="app.js"></script>
+</body>
+</html>
